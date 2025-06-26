@@ -37,7 +37,7 @@ export default function About() {
             </p>
             <p className="w-full">
               My current tech stack is PHP, MySQL, and JavaScript — with a love for building sleek frontends using HTML, CSS, and Tailwind CSS.
-              Right now, I'm exploring Next.js and Framer Motion, diving into generative SVGs, and experimenting with 3D design and animation to bring more creativity into my web projects.
+              Right now, I am exploring Next.js and Framer Motion, diving into generative SVGs, and experimenting with 3D design and animation to bring more creativity into my web projects.
             </p>
           </div>
           <MobileSocialLinks />
