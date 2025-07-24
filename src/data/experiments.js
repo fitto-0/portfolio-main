@@ -1,314 +1,176 @@
 export const experiments = [
+  // 1. Perfume Project (kept as is, add link if available)
   {
-    //slug: "#",
-    //name: "#",
+    slug: "miss-dior-eau-de-parfum",
+    name: "Miss Dior Eau de Parfum",
     type: "preview",
-    href: null,
+    href: {
+      url: "https://miss-dior.netlify.app/", // Add your live link here if available
+      type: "production",
+    },
     preview: {
       base: {
-        type: "video",
+        type: "image",
         width: 1280,
         height: 720,
-        placeholder:
-          "data:image/webp;base64,",
+        placeholder: "/prj1.png", // Place your screenshot in public/ and update the path if needed
       },
     },
-    ////date: "#",
+    date: "25 Jun 2025",
     mdx: false,
-    technologies: ["#"],
+    technologies: ["Next.js", "Tailwind"],
     attributes: null,
     theme: "light",
   },
+
+  // 2. Muzan Kibutsuji Project
   {
-    //slug: "#",
-    //name: "#",
+    slug: "muzan-kibutsuji",
+    name: "Muzan Kibutsuji",
     type: "preview",
-    href: null,
+    href: {
+      url: "https://muzan-kibutsuji.netlify.app/",
+      type: "production",
+    },
     preview: {
       base: {
-        type: "video",
+        type: "image",
         width: 1280,
-        height: 584,
-        placeholder:
-          "data:image/webp;base64,",
+        height: 720,
+        placeholder: "/muzan-kibutsuji.png", // Place your video in public/lab/ and update the path
+      },
+      // Optionally add a square or other aspect ratio
+      // square: {
+      //   type: "video",
+      //   width: 540,
+      //   height: 540,
+      //   placeholder: "/lab/muzan-kibutsuji-square.mp4",
+      // },
+    },
+    date: "2025-07-01",
+    mdx: false,
+    technologies: ["Next.js", "Tailwind"],
+    attributes: null,
+    theme: "dark",
+  },
+
+  // 3. Nasma Restaurant Project
+  {
+    slug: "nasma-restaurant",
+    name: "Nasma Restaurant",
+    type: "preview",
+    href: {
+      url: "https://nasma.netlify.app/",
+      type: "production",
+    },
+    preview: {
+      base: {
+        type: "image",
+        width: 1280,
+        height: 720,
+        placeholder: "/nasma.png",
       },
     },
-    ////date: "#",
+    date: "2025-05-15",
     mdx: false,
-    //technologies: ["#"],
+    technologies: ["Next.js", "Tailwind"],
     attributes: null,
     theme: "light",
   },
+
+  // 4. Divas Bloom Project
   {
-    //slug: "#",
-    //name: "#",
-    type: "internal",
+    slug: "divas-bloom",
+    name: "Divas Bloom",
+    type: "preview",
     href: {
-      url: "#",
-      type: "codepen",
-    },
-    preview: {
-      base: {
-        type: "video",
-        width: 540,
-        height: 540,
-        placeholder:
-          "data:image/webp;base64,",
-      },
-    },
-    ////date: "#",
-    mdx: true,
-    technologies: ["#"],
-    attributes: null,
-    theme: "dark",
-  },
-  {
-    //slug: "#",
-    //name: "#",
-    type: "external",
-    href: {
-      url: "#",
+      url: "https://github.com/fitto-0/ecommerce_website_pfe", // live link
       type: "production",
     },
     preview: {
       base: {
-        type: "video",
-        width: 864,
-        height: 540,
-        placeholder:
-          "data:image/webp;base64,",
-      },
-    },
-    //date: "#",
-    mdx: true,
-    technologies: ["#"],
-    attributes: null,
-    theme: "dark",
-  },
-  {
-    //slug: "#",
-    //name: "#",
-    type: "internal",
-    href: null,
-    preview: {
-      base: {
-        type: "video",
-        width: 1080,
-        height: 1080,
-        placeholder:
-          "data:image/webp;base64,",
-      },
-    },
-    //date: "#",
-    mdx: true,
-    technologies: ["#"],
-    attributes: {
-      keyBoardAccessibility: true,
-      touchAccessibility: true,
-    },
-    theme: "dark",
-  },
-  {
-    //slug: "#",
-    //name: "#",
-    type: "internal",
-    href: null,
-    preview: {
-      base: {
-        type: "video",
-        width: 1150,
-        height: 720,
-        placeholder:
-          "data:image/webp;base64,",
-      },
-      square: {
-        type: "video",
-        width: 540,
-        height: 540,
-        placeholder:
-          "data:image/webp;base64,",
-      },
-    },
-    //date: "#",
-    mdx: true,
-    technologies: ["#"],
-    attributes: {
-      keyBoardAccessibility: true,
-    },
-    theme: "dark",
-  },
-  {
-    //slug: "#",
-    //name: "#",
-    type: "internal",
-    href: null,
-    preview: {
-      base: {
-        type: "video",
-        width: 1034,
-        height: 720,
-        placeholder:
-          "data:image/webp;base64,",
-      },
-      square: {
-        type: "video",
-        width: 540,
-        height: 540,
-        placeholder:
-          "data:image/webp;base64,",
-      },
-    },
-    //date: "#",
-    mdx: false,
-    technologies: ["#"],
-    attributes: {
-      pointerDeviceOnly: true,
-    },
-    theme: "dark",
-  },
-  {
-    //slug: "#",
-    //name: "#",
-    type: "external",
-    href: {
-      url: "#",
-      type: "production",
-    },
-    preview: {
-      base: {
-        type: "video",
-        width: 1264,
-        height: 720,
-        placeholder:
-          "data:image/webp;base64,",
-      },
-    },
-    //date: "#",
-    mdx: false,
-    technologies: ["#"],
-    attributes: null,
-    theme: "dark",
-  },
-  {
-    //slug: "#",
-    //name: "#",
-    type: "internal",
-    href: {
-      url: "#",
-      type: "codepen",
-    },
-    preview: {
-      base: {
-        type: "video",
-        width: 1200,
-        height: 720,
-        placeholder:
-          "data:image/webp;base64,",
-      },
-      square: {
-        type: "video",
-        width: 720,
-        height: 720,
-        placeholder:
-          "data:image/webp;base64,",
-      },
-    },
-    //date: "#",
-    mdx: true,
-    technologies: ["#"],
-    attributes: null,
-    theme: "dark",
-  },
-  {
-    //slug: "#",
-    //name: "#",
-    type: "internal",
-    href: {
-      url: "#",
-      type: "codepen",
-    },
-    preview: {
-      base: {
-        type: "video",
+        type: "image",
         width: 1280,
-        height: 640,
-        placeholder:
-          "data:image/webp;base64,",
-      },
-    },
-    //date: "#",
-    mdx: false,
-    technologies: ["#"],
-    attributes: null,
-    theme: "dark",
-  },
-  {
-    //slug: "#",
-    //name: "#",
-    type: "internal",
-    href: {
-      url: "#",
-      type: "codepen",
-    },
-    preview: {
-      base: {
-        type: "video",
-        width: 640,
-        height: 640,
-        placeholder:
-          "data:image/webp;base64,",
-      },
-    },
-    //date: "#",
-    mdx: false,
-    technologies: ["#"],
-    attributes: null,
-    theme: "dark",
-  },
-  {
-    //slug: "#",
-    //name: "#",
-    type: "external",
-    href: {
-      url: "#",
-      type: "github",
-    },
-    preview: {
-      base: {
-        type: "video",
-        width: 1150,
         height: 720,
-        placeholder:
-          "data:image/webp;base64,",
+        placeholder: "/divasbloom.png",
       },
     },
-    //date: "#",
+    date: "2025-04-20",
     mdx: false,
-    technologies: ["#"],
+    technologies: ["Php", "Html", "Css", "Js", "Bootstrap"],
     attributes: null,
-    theme: "dark",
+    theme: "light",
   },
+  // 5. Synesthesia Project
   {
-    //slug: "#",
-    //name: "#",
-    type: "external",
+    slug: "synesthesia",
+    name: "Synesthesia",
+    type: "preview",
     href: {
-      url: "#",
+      url: "https://synesthesia-music.netlify.app/", // Add your live link here
       type: "production",
     },
     preview: {
       base: {
-        type: "video",
-        width: 1264,
+        type: "image",
+        width: 1280,
         height: 720,
-        placeholder:
-          "data:image/webp;base64,",
+        placeholder: "/synesthesia.png",
       },
     },
-    //date: "#",
+    date: "2024-10-28",
     mdx: false,
-    technologies: ["#"],
+    technologies: ["Html", "JavaScript", "CSS"],
     attributes: null,
     theme: "dark",
+  },
+
+  // 6. Tic Tac Toe Game
+  {
+    slug: "tic-tac-toe",
+    name: "Tic Tac Toe",
+    type: "preview",
+    href: {
+      url: "https://tictactoe-t.netlify.app/", // Add your live link here
+      type: "production",
+    },
+    preview: {
+      base: {
+        type: "image",
+        width: 1280,
+        height: 720,
+        placeholder: "/tictactoe.png",
+      },
+    },
+    date: "2024-01-15",
+    mdx: false,
+    technologies: ["React", "JavaScript"],
+    attributes: null,
+    theme: "light",
+  },
+
+  // 7. Veyora Project
+  {
+    slug: "veyora",
+    name: "Veyora",
+    type: "preview",
+    href: {
+      url: "https://github.com/fitto-0/veyoraagency", // Add your live link here
+      type: "production",
+    },
+    preview: {
+      base: {
+        type: "image",
+        width: 1280,
+        height: 720,
+        placeholder: "/veyora.png",
+      },
+    },
+    date: "2024-07-20",
+    mdx: false,
+    technologies: ["Html", "Css", "Js"],
+    attributes: null,
+    theme: "light",
   },
 ];
+
