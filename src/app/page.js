@@ -3,6 +3,7 @@ import Clock from "@/app/components/Clock";
 import VideoLink from "@/app/components/VideoLink";
 import DashedLine from "@/components/DashedLine";
 import MobileSocialLink from "@/components/MobileSocialLink";
+import AIChat from "@/components/AIChat";
 
 export default function Home() {
   return (
@@ -50,6 +51,7 @@ export default function Home() {
           <Name />
           <DashedLine direction="horizontal" className="bottom-0 right-0" />
         </div>
+        <AIChat />
         <div className="h-32 w-full flex justify-between items-center relative">
           <div className="hidden sm:grid h-full w-32 grid-rows-2 relative">
             <div className="relative">
