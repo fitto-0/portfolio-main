@@ -5,7 +5,7 @@ export default function robots() {
         userAgent: "*",
       },
     ],
-    sitemap: "https://abjt.dev/sitemap.xml",
-    host: "https://abjt.dev",
+    sitemap: "https://fzel.vercel.app//sitemap.xml",
+    host: "https://fzel.vercel.app/",
   };
 }
