@@ -53,5 +53,9 @@ export const data = {
       name: "Linkedin",
       url: "https://www.linkedin.com/in/fatima-zahra-elkasmi/",
     },
+    {
+      name: "CodePen",
+      url: "https://codepen.io/fitto-0/",
+    },
   ],
 };

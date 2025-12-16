@@ -191,7 +191,10 @@ export default function Home() {
               <MobileSocialLink type="linkedin" />
               <DashedLine direction="vertical" className="top-0 -right-px" />
             </div>
-            
+            <div className="aspect-square relative">
+              <MobileSocialLink type="codepen" />
+              <DashedLine direction="vertical" className="top-0 -right-px" />
+            </div>
           </div>
           <div className="hidden lg:block h-32"></div>
           <div className="hidden lg:block h-32"></div>

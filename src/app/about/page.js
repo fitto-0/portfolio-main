@@ -86,6 +86,9 @@ function MobileSocialLinks() {
       <div className="aspect-square">
         <MobileSocialLink type="linkedin" />
       </div>
+      <div className="aspect-square">
+        <MobileSocialLink type="codepen" />
+      </div>
       
       <DashedLine
         direction="horizontal"

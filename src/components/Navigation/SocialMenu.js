@@ -9,11 +9,17 @@ export default function SocialMenu() {
         <LinkWrapper href="https://github.com/fitto-0" label="github">
           <GithubIcon />
         </LinkWrapper>
+
         <LinkWrapper href="https://www.linkedin.com/in/fatima-zahra-elkasmi/" label="linkedin">
           <LinkedInIcon />
         </LinkWrapper>
+
         <LinkWrapper href="https://x.com/fitto_0" label="x">
           <XIcon />
+        </LinkWrapper>
+
+        <LinkWrapper href="https://codepen.io/fitto-0/" label="codepen">
+          <CodePenIcon />
         </LinkWrapper>
         
         <BottomStaticGlare />
@@ -100,6 +106,31 @@ function XIcon() {
     >
       <title>X</title>
       <path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z" />
+    </svg>
+  );
+}
+
+function CodePenIcon() {
+  return (
+    <svg
+      className={clsx(
+        "size-4 text-neutral-600 dark:text-neutral-400 group-hover:text-neutral-950 dark:group-hover:text-neutral-50 transition-all duration-150",
+        "drop-shadow-none group-hover:[filter:drop-shadow(0px_0px_4px_rgba(10,_10,_10,_.5))] dark:group-hover:[filter:drop-shadow(0px_0px_4px_rgba(250,250,250,1))]"
+      )}
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="6"
+      strokeLinecap="round"
+      style={{
+        transform: "translateZ(0)",
+      }}
+      strokeLinejoin="round"
+      role="img"
+      viewBox="0 0 64 64"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <title>CodePen</title>
+      <path d="M3.06 41.732L32 60.932l28.94-19.2V22.268L32 3.068l-28.94 19.2zm57.878 0L32 22.268 3.06 41.732m0-19.463L32 41.47l28.94-19.2M32 3.068v19.2m0 19.463v19.2" />
     </svg>
   );
 }
