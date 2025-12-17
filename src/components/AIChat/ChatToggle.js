@@ -33,78 +33,59 @@ export default function ChatToggle({ isOpen, onClick }) {
   const environment = process.env.NODE_ENV;
 
   return (
-    <div className="flex items-center justify-between rounded-full w-full sm:w-fit">
-      <button
-        onClick={onClick}
-        className={clsx(
-          "relative py-[calc(.5rem+1px)] px-4 hover:text-neutral-950 dark:hover:text-neutral-50 focus-visible:text-neutral-950 dark:focus-visible:text-neutral-50 duration-150 transition-colors rounded-full group outline-none",
-          isOpen 
-            ? "text-neutral-950 dark:text-neutral-50" 
-            : "text-neutral-500 dark:text-neutral-400"
-        )}
-      >
-        <span
-          className={clsx(
-            "text-sm sm:text-sm z-30 flex items-center gap-2 relative",
-            "[text-shadow:_0_0_1.25rem_rgba(10,10,10,0)] dark:[text-shadow:0_0_0.75rem_rgba(250,250,250,0)]",
-            "group-hover:[text-shadow:_0_0_1.25rem_rgba(10,10,10,1)] dark:group-hover:[text-shadow:0_0_0.75rem_rgba(250,250,250,1)]",
-            "group-active:scale-95",
-            "transition-[text-shadow, transform] duration-300"
-          )}
-        >
-          <MessageCircle className="w-4 h-4" />
-          <span>Chat</span>
-        </span>
-
-        <motion.div
-          layout
-          layoutRoot
-          className="flex justify-center items-center absolute top-0 left-1/2 -translate-x-1/2 h-full z-20 pointer-events-none"
-        >
-          {isOpen && (
-            <>
-              <LinkLight layoutId={linkLightLayoutId + "link_light"} />
-              {environment === 'development' && (
-                <div className="absolute h-32 w-32 -top-1/4">
-                  {/* ConsumingStarsOffscreenCanvas would go here if needed */}
-                </div>
-              )}
-            </>
-          )}
-        </motion.div>
-
-        {isOpen && (
-          <motion.div
-            key={linkLightLayoutId + "link_background"}
-            layoutId={linkLightLayoutId + "link_background"}
-            layout
-            className={clsx(
-              "absolute top-0 left-0 w-full h-[calc(100%-.5rem)] my-1",
-              "bg-[rgba(0,0,0,0.025)] dark:bg-[rgba(255,255,255,0.025)]",
-              "border border-neutral-200 dark:border-neutral-800 rounded-full"
-            )}
-            transition={{
-              type: "spring",
-              stiffness: 50,
-              damping: 11.5,
-            }}
-            style={{
-              originY: "top",
-            }}
-          />
-        )}
-      </button>
+    <motion.button
+      onClick={onClick}
+      className={clsx(
+        "group p-2 rounded-full relative z-20 outline-none",
+        "bg-gradient-to-tl from-neutral-50 dark:from-neutral-925 via-neutral-200 dark:via-neutral-900 to-neutral-50 dark:to-neutral-925",
+        "focus-visible:ring-1 ring-neutral-950 dark:ring-neutral-50",
+        isOpen 
+          ? "text-neutral-950 dark:text-neutral-50" 
+          : "text-neutral-500 dark:text-neutral-400"
+      )}
+      aria-label="Toggle chat"
+    >
+      <div className="relative z-10 flex items-center gap-1 justify-center">
+        <MessageCircle className="w-4 h-4 text-neutral-700 dark:text-neutral-300 group-hover:text-neutral-900 dark:group-hover:text-white transition-colors" />
+        <span className="text-xs font-medium text-neutral-700 dark:text-neutral-300 group-hover:text-neutral-900 dark:group-hover:text-white hidden sm:inline">Chat with me</span>
+      </div>
       
-      {/* Add the same glare effect as in the navigation */}
-      <motion.div
-        className="absolute left-0 top-1/2 h-16 w-16 bg-gradient-to-r from-transparent via-black dark:via-white to-transparent blur-sm -z-10 opacity-0 group-hover:opacity-100"
+      {/* Hover effect */}
+      <motion.div 
+        className="absolute inset-0 rounded-full bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity"
         initial={false}
-        transition={{
-          type: "spring",
-          stiffness: 50,
-          damping: 13.5,
-        }}
       />
-    </div>
+      
+      <motion.div
+        layout
+        layoutRoot
+        className="flex justify-center items-center absolute top-0 left-1/2 -translate-x-1/2 h-full z-20 pointer-events-none"
+      >
+        {isOpen && (
+          <LinkLight layoutId={linkLightLayoutId + "link_light"} />
+        )}
+      </motion.div>
+
+      {isOpen && (
+        <motion.div
+          key={linkLightLayoutId + "link_background"}
+          layoutId={linkLightLayoutId + "link_background"}
+          layout
+          className={clsx(
+            "absolute top-0 left-0 w-full h-[calc(100%-.5rem)] my-1",
+            "bg-[rgba(0,0,0,0.025)] dark:bg-[rgba(255,255,255,0.025)]",
+            "border border-neutral-200 dark:border-neutral-800 rounded-full"
+          )}
+          transition={{
+            type: "spring",
+            stiffness: 50,
+            damping: 11.5,
+          }}
+          style={{
+            originY: "top",
+          }}
+        />
+      )}
+    </motion.button>
   );
 }

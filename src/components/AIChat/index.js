@@ -4,15 +4,12 @@ import { AiResponse } from "@/components/ui/button";
 import { ArrowUp, Loader2, Bot, User as UserIcon } from "lucide-react";
 import React, { useEffect, useRef, useState, useTransition } from "react";
 import { IoClose } from "react-icons/io5";
-import ReactMarkdown from 'react-markdown';
-import remarkGfm from 'remark-gfm';
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 import { BorderBeam } from "../magicui/border-beam";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 import ChatToggle from "./ChatToggle";
-
-
-
 
 const Chat = ({ close }) => {
   const [messages, setMessages] = useState([]);
@@ -23,7 +20,7 @@ const Chat = ({ close }) => {
   const [showToggle, setShowToggle] = useState(true);
 
   const handleSend = () => {
-    if (!input.trim() || isPending) return; // prevent spam fast clicks
+    if (!input.trim() || isPending) return;
 
     const newMessage = {
       id: Date.now(),
@@ -47,7 +44,6 @@ const Chat = ({ close }) => {
 
     const lastMessage = messages[messages.length - 1];
 
-    // Only call AI API if last message is from USER
     if (lastMessage.sender !== "user") return;
 
     startTransition(() => {
@@ -82,8 +78,31 @@ const Chat = ({ close }) => {
     }
   };
 
+  // On mobile, the toggle is in the navigation bar
+  // On desktop, we show the toggle as a floating button
+  const [isMobile, setIsMobile] = useState(false);
+  
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    
+    // Set initial value
+    handleResize();
+    
+    // Add event listener for window resize
+    window.addEventListener('resize', handleResize);
+    
+    // Clean up the event listener when the component unmounts
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+  
   if (!isOpen) {
-    return showToggle ? (
+    if (isMobile) {
+      return null; // On mobile, the toggle is in the navigation bar
+    }
+    // On desktop, show the floating toggle button
+    return (
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -91,7 +110,7 @@ const Chat = ({ close }) => {
       >
         <ChatToggle onClick={toggleChat} />
       </motion.div>
-    ) : null;
+    );
   }
 
   return (
@@ -99,15 +118,21 @@ const Chat = ({ close }) => {
       initial={{ opacity: 0, scale: 0.95, y: 20 }}
       animate={{ opacity: 1, scale: 1, y: 0 }}
       exit={{ opacity: 0, scale: 0.95, y: 20 }}
-      transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-      className="fixed bottom-8 right-8 w-96 z-50 border border-neutral-200 dark:border-neutral-800 rounded-2xl bg-white/50 dark:bg-neutral-900/50 backdrop-blur-sm shadow-xl overflow-hidden"
+      transition={{ type: "spring", damping: 25, stiffness: 300 }}
+      className={cn(
+        "fixed bottom-20 right-4 md:bottom-8 md:right-8 w-[calc(100%-2rem)] md:w-96 z-50",
+        "rounded-2xl",
+        "bg-white/80 dark:bg-neutral-900/80 backdrop-blur-sm shadow-xl overflow-hidden"
+      )}
     >
-      <div className="flex items-center justify-between p-3 border-b border-neutral-100 dark:border-neutral-800 bg-white/80 dark:bg-neutral-900/80">
+      <div className="flex items-center justify-between p-3 bg-white/80 dark:bg-neutral-900/80">
         <div className="flex items-center gap-2">
           <div className="w-2.5 h-2.5 rounded-full bg-green-400 animate-pulse"></div>
-          <span className="text-sm font-medium text-neutral-700 dark:text-neutral-300">AI Assistant</span>
+          <span className="text-sm font-medium text-neutral-700 dark:text-neutral-300">
+            AI Assistant
+          </span>
         </div>
-        <motion.button 
+        <motion.button
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           onClick={toggleChat}
@@ -117,20 +142,21 @@ const Chat = ({ close }) => {
           <IoClose className="w-4 h-4 text-neutral-500" />
         </motion.button>
       </div>
-      
-      <div className="flex-1 flex flex-col h-[500px] max-h-[70vh]">
+
+      <div className="flex-1 flex flex-col h-[60vh] max-h-[80vh]">
         <div
-          className="flex-1 flex flex-col p-4 space-y-4 overflow-y-auto scrollbar-thin scrollbar-thumb-neutral-300 dark:scrollbar-thumb-neutral-700 scrollbar-track-transparent"
+          className="flex-1 flex flex-col p-3 sm:p-4 space-y-3 sm:space-y-4 overflow-y-auto scrollbar-thin scrollbar-thumb-neutral-300 dark:scrollbar-thumb-neutral-700 scrollbar-track-transparent"
           ref={listRef}
         >
           {messages.length === 0 ? (
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               className="h-full flex flex-col items-center justify-center text-center p-6"
             >
-              
-              <h3 className="text-lg font-medium text-neutral-800 dark:text-neutral-200 mb-1">How can I help you today?</h3>
+              <h3 className="text-lg font-medium text-neutral-800 dark:text-neutral-200 mb-1">
+                How can I help you today?
+              </h3>
               <p className="text-sm text-neutral-500 dark:text-neutral-400 max-w-md">
                 Ask me anything about my work, experience, or just say hi!
               </p>
@@ -156,7 +182,7 @@ const Chat = ({ close }) => {
                 </motion.div>
               ))}
               {isPending && (
-                <motion.div 
+                <motion.div
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   className="flex items-start gap-2 p-3 rounded-lg bg-neutral-50 dark:bg-neutral-800/50 w-fit max-w-[85%]"
@@ -184,13 +210,13 @@ const Chat = ({ close }) => {
           )}
         </div>
       </div>
-      
-      <div className="p-3 border-t border-neutral-100 dark:border-neutral-800 bg-white/80 dark:bg-neutral-900/80">
-        <div className="relative">
+
+      <div className="px-3 py-2 sm:px-4 sm:py-3 bg-white/80 dark:bg-neutral-900/80">
+        <div className="relative flex items-center">
           <input
             disabled={isPending}
             type="text"
-            className="w-full py-3 pl-4 pr-12 bg-white dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 transition-all duration-200"
+            className="w-full py-2.5 sm:py-3 pl-4 pr-14 bg-white dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-rose-500/50 focus:border-blue-500 transition-all duration-200"
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={(e) => {
@@ -204,19 +230,28 @@ const Chat = ({ close }) => {
           <motion.button
             disabled={!input.trim() || isPending}
             onClick={handleSend}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
+            whileHover={!isPending ? { scale: 1.1 } : {}}
+            whileTap={!isPending ? { scale: 0.95 } : {}}
             className={cn(
-              "absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-lg flex items-center justify-center transition-colors",
-              input.trim() && !isPending 
-                ? "bg-gradient-to-br from-blue-500 to-purple-600 text-white shadow-md"
-                : "bg-neutral-100 dark:bg-neutral-700 text-neutral-400 cursor-not-allowed"
+              "absolute right-2 w-8 h-8 rounded-full flex items-center justify-center transition-all duration-200",
+              "focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-rose-500/50",
+              "border border-transparent",
+              input.trim() && !isPending
+                ? "bg-gradient-to-br from-rose-500 to-pink-600 text-white shadow-lg hover:shadow-rose-500/30"
+                : "bg-transparent text-neutral-400 dark:text-neutral-500 cursor-not-allowed"
             )}
+            aria-label="Send message"
           >
             {isPending ? (
               <Loader2 className="w-4 h-4 animate-spin" />
             ) : (
-              <ArrowUp className="w-4 h-4" />
+              <motion.span
+                initial={{ opacity: 0.9 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 2, repeat: Infinity, repeatType: "reverse" }}
+              >
+                <ArrowUp className="w-4 h-4" />
+              </motion.span>
             )}
           </motion.button>
         </div>
@@ -224,28 +259,24 @@ const Chat = ({ close }) => {
           Ask about my experience, projects, or anything else!
         </p>
       </div>
-      
-      <BorderBeam 
-        colorFrom="#3b82f6" 
-        colorTo="#8b5cf6" 
-        duration={15} 
-        size={300} 
-        className="z-0"
-      />
+
+      <BorderBeam colorFrom="#3b82f6" colorTo="#8b5cf6" duration={15} size={300} className="z-0" />
     </motion.div>
   );
 };
 
 export default Chat;
 
+// ======================= User & Assistant Message Components =======================
+
 const UserMessage = ({ message }) => {
   return (
-    <div className="flex items-start gap-2.5 max-w-[85%] group">
-      <div className="w-6 h-6 rounded-full bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center flex-shrink-0">
-        <UserIcon className="w-3.5 h-3.5 text-white" />
+    <div className="flex items-start gap-2 sm:gap-2.5 max-w-[90%] sm:max-w-[85%] group">
+      <div className="w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-gradient-to-br from-teal-400 to-emerald-500 flex items-center justify-center flex-shrink-0">
+        <UserIcon className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-white" />
       </div>
-      <div className="bg-gradient-to-br from-blue-500 to-purple-600 text-white px-4 py-2.5 rounded-2xl rounded-tl-none shadow-sm">
-        <p className="text-sm font-medium">{message}</p>
+      <div className="bg-gradient-to-br from-teal-500 to-emerald-600 text-white px-3 py-2 sm:px-4 sm:py-2.5 rounded-2xl rounded-tl-none shadow-sm">
+        <p className="text-sm font-medium break-words">{message}</p>
       </div>
     </div>
   );
@@ -254,40 +285,51 @@ const UserMessage = ({ message }) => {
 const AssistantMessage = ({ message, error }) => {
   if (error) {
     return (
-      <div className="flex items-start gap-2.5 max-w-[85%] group">
-        <div className="w-6 h-6 rounded-full bg-gradient-to-br from-rose-500 to-pink-600 flex items-center justify-center flex-shrink-0">
-          <Bot className="w-3.5 h-3.5 text-white" />
+      <div className="flex items-start gap-2 sm:gap-2.5 max-w-[90%] sm:max-w-[85%] group">
+        <div className="w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-gradient-to-br from-rose-500 to-pink-600 flex items-center justify-center flex-shrink-0">
+          <Bot className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-white" />
         </div>
-        <div className="bg-rose-50 dark:bg-rose-900/30 text-rose-700 dark:text-rose-300 px-4 py-2.5 rounded-2xl rounded-tl-none shadow-sm">
-          <p className="text-sm">{message}</p>
+        <div className="bg-rose-50 dark:bg-rose-900/30 text-rose-700 dark:text-rose-300 px-3 py-2 sm:px-4 sm:py-2.5 rounded-2xl rounded-tl-none shadow-sm">
+          <p className="text-sm break-words">{message}</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="flex items-start gap-2.5 max-w-[85%] group">
-      <div className="w-6 h-6 rounded-full bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center flex-shrink-0">
-        <Bot className="w-3.5 h-3.5 text-white" />
+    <div className="flex items-start gap-2 sm:gap-2.5 max-w-[90%] sm:max-w-[85%] group">
+      <div className="w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center flex-shrink-0">
+        <Bot className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-white" />
       </div>
-      <div className="bg-neutral-50 dark:bg-neutral-800 text-neutral-800 dark:text-neutral-200 px-4 py-2.5 rounded-2xl rounded-tl-none shadow-sm">
-        <ReactMarkdown 
+      <div className="bg-gradient-to-br from-indigo-500 to-purple-700 text-white px-3 py-2 sm:px-4 sm:py-2.5 rounded-2xl rounded-tl-none shadow-sm">
+        <ReactMarkdown
           remarkPlugins={[remarkGfm]}
           components={{
-            p: ({node, ...props}) => <p className="mb-3 last:mb-0 text-sm leading-relaxed" {...props} />,
-            a: ({node, ...props}) => <a className="text-blue-500 hover:underline" target="_blank" rel="noopener noreferrer" {...props} />,
-            strong: ({node, ...props}) => <strong className="font-semibold" {...props} />,
-            em: ({node, ...props}) => <em className="italic" {...props} />,
-            ul: ({node, ...props}) => <ul className="list-disc pl-5 space-y-1 my-2" {...props} />,
-            ol: ({node, ...props}) => <ol className="list-decimal pl-5 space-y-1 my-2" {...props} />,
-            code: ({node, inline, ...props}) => {
+            p: ({ node, ...props }) => (
+              <p className="mb-2 sm:mb-3 last:mb-0 text-sm leading-relaxed break-words" {...props} />
+            ),
+            a: ({ node, ...props }) => (
+              <a className="text-blue-500 hover:underline break-words" target="_blank" rel="noopener noreferrer" {...props} />
+            ),
+            strong: ({ node, ...props }) => <strong className="font-semibold" {...props} />,
+            em: ({ node, ...props }) => <em className="italic" {...props} />,
+            ul: ({ node, ...props }) => <ul className="list-disc pl-4 sm:pl-5 space-y-1 my-1 sm:my-2" {...props} />,
+            ol: ({ node, ...props }) => <ol className="list-decimal pl-4 sm:pl-5 space-y-1 my-1 sm:my-2" {...props} />,
+            code: ({ node, inline, ...props }) => {
               if (inline) {
-                return <code className="bg-neutral-100 dark:bg-neutral-700 text-sm px-1.5 py-0.5 rounded" {...props} />
+                return <code className="bg-neutral-100 dark:bg-neutral-700 text-xs sm:text-sm px-1 py-0.5 rounded break-words" {...props} />;
               }
-              return <pre className="bg-neutral-100 dark:bg-neutral-800 p-3 rounded-lg overflow-x-auto my-3"><code className="text-sm" {...props} /></pre>
+              return (
+                <pre className="bg-neutral-100 dark:bg-neutral-800 p-2 sm:p-3 rounded-lg overflow-x-auto my-2 sm:my-3">
+                  <code className="text-xs sm:text-sm break-words" {...props} />
+                </pre>
+              );
             },
-            blockquote: ({node, ...props}) => <blockquote className="border-l-4 border-neutral-300 dark:border-neutral-600 pl-4 py-1 my-2 text-neutral-600 dark:text-neutral-300 italic" {...props} />
+            blockquote: ({ node, ...props }) => (
+              <blockquote className="border-l-4 border-neutral-300 dark:border-neutral-600 pl-3 sm:pl-4 py-1 my-1 sm:my-2 text-neutral-600 dark:text-neutral-300 italic text-xs sm:text-sm" {...props} />
+            ),
           }}
+          className="prose-sm sm:prose dark:prose-invert max-w-none"
         >
           {message}
         </ReactMarkdown>
