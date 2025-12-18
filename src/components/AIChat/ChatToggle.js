@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { MessageCircle } from "lucide-react";
 import React from "react";
 import clsx from "clsx";
+import useChat from '@/contexts/ChatContext';
 
 function LinkLight({ layoutId }) {
   return (
@@ -28,7 +29,8 @@ function LinkLight({ layoutId }) {
   );
 }
 
-export default function ChatToggle({ isOpen, onClick }) {
+export default function ChatToggle() {
+  const { isChatOpen: isOpen, toggleChat: onClick } = useChat();
   const linkLightLayoutId = React.useId();
   const environment = process.env.NODE_ENV;
 

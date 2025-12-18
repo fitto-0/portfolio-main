@@ -9,15 +9,26 @@ import remarkGfm from "remark-gfm";
 import { BorderBeam } from "../magicui/border-beam";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
-import ChatToggle from "./ChatToggle";
+import useChat from '@/contexts/ChatContext';
 
-const Chat = ({ close }) => {
+const Chat = () => {
+  const { isChatOpen, toggleChat } = useChat();
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
   const [isPending, startTransition] = useTransition();
   const listRef = useRef(null);
-  const [isOpen, setIsOpen] = useState(false);
-  const [showToggle, setShowToggle] = useState(true);
+  const [isMobile, setIsMobile] = useState(false);
+  const chatTitle = "AI Assistant";
+
+  useEffect(() => {
+    const checkIfMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    
+    checkIfMobile();
+    window.addEventListener('resize', checkIfMobile);
+    return () => window.removeEventListener('resize', checkIfMobile);
+  }, []);
 
   const handleSend = () => {
     if (!input.trim() || isPending) return;
@@ -65,53 +76,8 @@ const Chat = ({ close }) => {
     });
   }, [messages]);
 
-  const toggleChat = () => {
-    if (isOpen) {
-      setShowToggle(false);
-      setTimeout(() => {
-        setIsOpen(false);
-        setShowToggle(true);
-      }, 300);
-    } else {
-      setIsOpen(true);
-      setShowToggle(false);
-    }
-  };
-
-  // On mobile, the toggle is in the navigation bar
-  // On desktop, we show the toggle as a floating button
-  const [isMobile, setIsMobile] = useState(false);
-  
-  useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-    
-    // Set initial value
-    handleResize();
-    
-    // Add event listener for window resize
-    window.addEventListener('resize', handleResize);
-    
-    // Clean up the event listener when the component unmounts
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
-  
-  if (!isOpen) {
-    if (isMobile) {
-      return null; // On mobile, the toggle is in the navigation bar
-    }
-    // On desktop, show the floating toggle button
-    return (
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="fixed bottom-8 right-8 z-50"
-      >
-        <ChatToggle onClick={toggleChat} />
-      </motion.div>
-    );
-  }
+  // Don't render anything if chat is closed
+  if (!isChatOpen) return null;
 
   return (
     <motion.div 
@@ -129,7 +95,7 @@ const Chat = ({ close }) => {
         <div className="flex items-center gap-2">
           <div className="w-2.5 h-2.5 rounded-full bg-green-400 animate-pulse"></div>
           <span className="text-sm font-medium text-neutral-700 dark:text-neutral-300">
-            AI Assistant
+            {chatTitle}
           </span>
         </div>
         <motion.button
@@ -265,7 +231,8 @@ const Chat = ({ close }) => {
   );
 };
 
-export default Chat;
+// Using named export for better tree-shaking and explicit imports
+export { Chat as default };
 
 // ======================= User & Assistant Message Components =======================
 

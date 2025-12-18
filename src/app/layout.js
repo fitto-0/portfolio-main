@@ -8,6 +8,7 @@ import ThemeProvider from "@/context/ThemeProvider";
 import SoundProvider from "@/context/SoundProvider";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import { ChatProvider } from "@/contexts/ChatContext";
 
 export const metadata = {
   title: {
@@ -73,8 +74,10 @@ export default function RootLayout({ children }) {
       <body className="text-neutral-950 dark:text-neutral-50 font-geistsans bg-neutral-200 dark:bg-neutral-925 relative overflow-x-hidden z-10">
         <ThemeProvider initialTheme={theme}>
           <SoundProvider>
-            <Navigation />
-            {children}
+            <ChatProvider>
+              <Navigation />
+              {children}
+            </ChatProvider>
           </SoundProvider>
         </ThemeProvider>
         <SpeedInsights />
