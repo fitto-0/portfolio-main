@@ -1,37 +1,90 @@
 "use server";
 
-import { unstable_noStore as noStore } from "next/cache"; // FIX HERE
+import { unstable_noStore as noStore } from "next/cache";
+
+/* =========================
+   OpenRouter Configuration
+========================= */
 
 const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY?.trim();
 const OPENROUTER_BASE_URL = "https://openrouter.ai/api/v1";
+
 const OPENROUTER_REFERER = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
   : "http://localhost:3000";
 
-const myInfos = `
-My name is Fatima Zahra El Kasmi.
-I am a full stack developer specializing in modern web technologies.
-Skills: JavaScript, React, Next.js, PHP, MySQL, HTML, CSS.
-Experience: Building e-commerce websites, dashboards, management systems and landing pages.
-Languages: Arabic, French, English.
+/* =========================
+   SYSTEM PROMPT (IMPORTANT)
+========================= */
+
+const SYSTEM_PROMPT = `
+You are an AI assistant representing Fatima Zahra El Kasmi.
+
+Identity:
+- Name: Fatima Zahra El Kasmi
+- Profession: Full Stack Developer
+
+Technical Skills:
+- Frontend: HTML, CSS, JavaScript, React, Next.js
+- Backend: PHP, MySQL
+- Other: REST APIs, authentication systems, dashboards, admin panels, UI/UX implementation
+
+Project Experience:
+- E-commerce websites (products, cart, checkout logic, admin dashboards)
+- Management systems (users, products, stock, orders)
+- Dashboards and admin panels
+- Portfolio websites and landing pages
+- Full CRUD web applications
+
+Languages:
+- Arabic (native)
+- French (fluent)
+- English (fluent)
+
+Behavior Rules:
+- Always answer as Fatima Zahra El Kasmi.
+- Use first person ("I", "my") when asked about yourself.
+- Be professional, confident, and human-like.
+- Answer questions precisely and specifically.
+- Do NOT invent skills, tools, or experience.
+- Do NOT mention being an AI or language model.
+- If a question is unrelated, answer briefly and politely.
+
+Answer Style:
+- Short and clear answers.
+- use emojis when needed.
+- No markdown unless necessary.
+- No unnecessary explanations.
 `;
 
-const DEFAULT_MODELS = [
+/* =========================
+   Models Fallback Order
+========================= */
+
+const MODELS = [
   "openai/gpt-3.5-turbo",
   "meta-llama/llama-3.1-8b-instruct:free",
   "google/gemma-2-9b-it:free",
 ];
 
-const withTimeout = async (promise, ms) => {
+/* =========================
+   Utility: Timeout Wrapper
+========================= */
+
+const withTimeout = async (promiseFn, ms) => {
   const controller = new AbortController();
-  const timeoutId = setTimeout(() => controller.abort(), ms);
+  const timeout = setTimeout(() => controller.abort(), ms);
+
   try {
-    const result = await promise(controller.signal);
-    return result;
+    return await promiseFn(controller.signal);
   } finally {
-    clearTimeout(timeoutId);
+    clearTimeout(timeout);
   }
 };
+
+/* =========================
+   OpenRouter API Call
+========================= */
 
 const callOpenRouter = async ({ model, message }) => {
   const response = await withTimeout(
@@ -50,12 +103,7 @@ const callOpenRouter = async ({ model, message }) => {
         body: JSON.stringify({
           model,
           messages: [
-            {
-              role: "system",
-              content: `If someone asks about me, answer using these infos: ${myInfos}`,
-            },
-            { role: "system", content: "Answer like a human." },
-            { role: "system", content: "Always answer with a short answer." },
+            { role: "system", content: SYSTEM_PROMPT },
             { role: "user", content: message },
           ],
         }),
@@ -67,58 +115,55 @@ const callOpenRouter = async ({ model, message }) => {
   return { response, data };
 };
 
-const isTransientOpenRouterError = (status, msg) => {
+/* =========================
+   Error Detection
+========================= */
+
+const isTransientError = (status, message) => {
   if (!status) return false;
   if (status >= 500) return true;
-  const m = (msg || "").toLowerCase();
+
+  const msg = (message || "").toLowerCase();
   return (
-    m.includes("timeout") ||
-    m.includes("timed out") ||
-    m.includes("tls handshake") ||
-    m.includes("overloaded") ||
-    m.includes("temporarily")
+    msg.includes("timeout") ||
+    msg.includes("timed out") ||
+    msg.includes("overloaded") ||
+    msg.includes("temporarily") ||
+    msg.includes("tls")
   );
 };
 
+/* =========================
+   Server Action
+========================= */
+
 export const AiResponse = async (message) => {
-  noStore(); // Now works on Next.js 14
+  noStore();
 
   if (!OPENROUTER_API_KEY) {
     return { result: "Missing OPENROUTER_API_KEY.", state: false };
   }
 
-  try {
-    const models = DEFAULT_MODELS;
-    let lastErrorMessage = null;
+  let lastError = null;
 
-    for (const model of models) {
-      // Retry each model once if we hit a transient/provider error
-      for (let attempt = 0; attempt < 2; attempt++) {
-        let response;
-        let data;
-
-        try {
-          ({ response, data } = await callOpenRouter({ model, message }));
-        } catch (e) {
-          // fetch aborts / network errors
-          lastErrorMessage = e?.name === "AbortError" ? "Request timed out." : e?.message;
-          if (attempt === 0) continue;
-          break;
-        }
+  for (const model of MODELS) {
+    for (let attempt = 0; attempt < 2; attempt++) {
+      try {
+        const { response, data } = await callOpenRouter({ model, message });
 
         if (!response.ok) {
-          const msg =
+          const errorMsg =
             data?.error?.message ||
             data?.message ||
-            `OpenRouter error (${response.status}).`;
-          lastErrorMessage = msg;
+            `OpenRouter error (${response.status})`;
 
-          // If the key is invalid, no fallback will help
+          lastError = errorMsg;
+
           if (response.status === 401 || response.status === 403) {
-            return { result: msg, state: false };
+            return { result: errorMsg, state: false };
           }
 
-          if (isTransientOpenRouterError(response.status, msg) && attempt === 0) {
+          if (isTransientError(response.status, errorMsg) && attempt === 0) {
             continue;
           }
 
@@ -126,24 +171,26 @@ export const AiResponse = async (message) => {
         }
 
         const text = data?.choices?.[0]?.message?.content;
+
         if (!text) {
-          lastErrorMessage = "No response returned. Try again.";
+          lastError = "No response returned.";
           break;
         }
 
-        return { result: text, state: true };
+        return { result: text.trim(), state: true };
+      } catch (err) {
+        lastError =
+          err?.name === "AbortError"
+            ? "Request timed out."
+            : err?.message || "Network error.";
+
+        if (attempt === 0) continue;
       }
     }
-
-    return {
-      result: lastErrorMessage || "AI service error. Try again later.",
-      state: false,
-    };
-  } catch (error) {
-    console.error("AI Error:", error);
-    return {
-      result: error?.message || "AI service error. Try again later.",
-      state: false,
-    };
   }
+
+  return {
+    result: lastError || "AI service unavailable. Please try again later.",
+    state: false,
+  };
 };

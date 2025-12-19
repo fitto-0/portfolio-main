@@ -4,7 +4,7 @@ import Link from "next/link";
 export default function DownloadButton() {
   return (
     <a
-      href="https://cv-iota-steel.vercel.app/"
+      href="https://fzel-cv.vercel.app/"
       target="_blank"
       className=" bg-neutral-200 dark:bg-neutral-800 p-px rounded-full relative shadow-sm shadow-neutral-400 dark:shadow-black group outline-none focus-visible:ring-1 ring-neutral-950 dark:ring-neutral-50"
       aria-label="see my resume"

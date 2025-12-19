@@ -172,5 +172,101 @@ export const experiments = [
     attributes: null,
     theme: "light",
   },
+
+  // 8. knight and princess landing page
+  {
+    slug: "knight-and-princess",
+    name: "Knight and Princess",
+    type: "preview",
+    href: {
+      url: "https://knight-and-princess.vercel.app/", // Add your live link here
+      type: "production",
+    },
+    preview: {
+      base: {
+        type: "image",
+        width: 1280,
+        height: 720,
+        placeholder: "/kap.png",
+      },
+    },
+    date: "2025-12-03",
+    mdx: false,
+    technologies: ["next.js", "tailwind"],
+    attributes: null,
+    theme: "dark",
+  },
+
+   // 9. AgencyPro dashboard project
+  {
+    slug: "agencyPro",
+    name: "AgencyPro",
+    type: "preview",
+    href: {
+      url: "https://agencypro-dashboard.vercel.app/", // Add your live link here
+      type: "production",
+    },
+    preview: {
+      base: {
+        type: "image",
+        width: 1280,
+        height: 720,
+        placeholder: "/agencyproo.png",
+      },
+    },
+    date: "2025-12-03",
+    mdx: false,
+    technologies: ["next.js", "tailwind", "clerk"],
+    attributes: null,
+    theme: "light",
+  },
+
+  // 10. cv
+  {
+    slug: "cv",
+    name: "CV",
+    type: "preview",
+    href: {
+      url: "https://fzel-cv.vercel.app/", // Add your live link here
+      type: "production",
+    },
+    preview: {
+      base: {
+        type: "image",
+        width: 1280,
+        height: 720,
+        placeholder: "/cv.png",
+      },
+    },
+    date: "2025-12-07",
+    mdx: false,
+    technologies: ["next.js", "tailwind"],
+    attributes: null,
+    theme: "light",
+  },
+
+   // 11. van gogh gallery landing page
+  {
+    slug: "van-gogh-gallery",
+    name: "Van Gogh Gallery",
+    type: "preview",
+    href: {
+      url: "https://vangoghgallery.vercel.app/", // Add your live link here
+      type: "production",
+    },
+    preview: {
+      base: {
+        type: "image",
+        width: 1280,
+        height: 720,
+        placeholder: "/vangogh.png",
+      },
+    },
+    date: "2025-06-07",
+    mdx: false,
+    technologies: ["javascript", "tailwind"],
+    attributes: null,
+    theme: "dark",
+  },
 ];
 
