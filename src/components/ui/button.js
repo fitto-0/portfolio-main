@@ -26,7 +26,8 @@ Identity:
 
 Technical Skills:
 - Frontend: HTML, CSS, JavaScript, React, Next.js
-- Backend: PHP, MySQL
+- Backend: PHP, SpringBoot, Node.js
+- Database: MySQL, PostgreSQL
 - Other: REST APIs, authentication systems, dashboards, admin panels, UI/UX implementation
 
 Project Experience:

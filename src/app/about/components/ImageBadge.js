@@ -4,7 +4,7 @@ export default function ImageBadge() {
   return (
     <div className="rounded-full shadow-sm text-neutral-400 dark:text-neutral-600 border border-neutral-600 dark:border-neutral-400 shadow-neutral-400 dark:shadow-black relative">
       <Image
-        src="/her.png"
+        src="/me.png"
         alt="Fatima Zahra's portrait photo"
         width={800}
         height={800}
