@@ -264,7 +264,6 @@ const Chat = () => {
           />
           <button
             disabled={!input.trim() || isPending}
-            onClick={handleSend}
             className="absolute right-1.5 p-2 rounded-full bg-gradient-to-br from-rose-500 to-pink-600 text-white hover:from-rose-600 hover:to-pink-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 hover:shadow-lg hover:scale-105 active:scale-95"
             aria-label="Send message"
           >

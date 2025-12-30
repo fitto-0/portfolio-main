@@ -72,7 +72,7 @@ export default function AIChat() {
         />
         <button
           className="bg-blue-600 text-white px-4 rounded"
-          onClick={sendMessage}
+          onClick={() => sendMessage()}
           disabled={loading}
         >
           Send
